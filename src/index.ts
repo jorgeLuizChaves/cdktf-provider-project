@@ -72,6 +72,11 @@ export interface CdktfProviderProjectOptions extends cdk.JsiiProjectOptions {
    * defaults to "HashiCorp, Inc."
    */
   readonly licensee?: string;
+
+  /**
+   * Github secret name where Token is stored as an env var for installing yarn packages
+   */
+  readonly npmInstallEnvVar?: string;
 }
 
 const getMavenName = (providerName: string): string => {
@@ -120,6 +125,7 @@ export class CdktfProviderProject extends cdk.JsiiProject {
       mavenEndpoint = "https://hashicorp.oss.sonatype.org",
       nugetOrg = "HashiCorp",
       mavenOrg = "hashicorp",
+      npmInstallEnvVar = "GITHUB_TOKEN",
     } = options;
 
     const [fqproviderName, providerVersion] = terraformProvider.split("@");
@@ -251,6 +257,7 @@ export class CdktfProviderProject extends cdk.JsiiProject {
 
     super({
       ...options,
+      npmRegistryUrl: "https://npm.pkg.github.com", //GITHUB npm registry
       authorAddress,
       authorName,
       minNodeVersion,
@@ -275,10 +282,10 @@ export class CdktfProviderProject extends cdk.JsiiProject {
           schedule: UpgradeDependenciesSchedule.WEEKLY,
         },
       },
-      python: packageInfo.python,
-      publishToNuget: packageInfo.publishToNuget,
-      publishToMaven: packageInfo.publishToMaven,
-      publishToGo: packageInfo.publishToGo,
+      // python: packageInfo.python,
+      // publishToNuget: packageInfo.publishToNuget,
+      // publishToMaven: packageInfo.publishToMaven,
+      // publishToGo: packageInfo.publishToGo,
       releaseFailureIssue: true,
       peerDependencyOptions: {
         pinnedDevDependency: false,
@@ -359,7 +366,30 @@ export class CdktfProviderProject extends cdk.JsiiProject {
     const releaseWorkflow = this.tryFindObjectFile(
       ".github/workflows/release.yml"
     );
-    releaseWorkflow?.addOverride("jobs.release_github.needs", "release");
+
+    const release_tags = [
+      "release",
+      "deprecate",
+      "release_npm",
+      // "release_maven",
+      // "release_pypi",
+      // "release_nuget",
+      // "release_golang",
+    ];
+
+    release_tags.forEach((tag) => {
+      releaseWorkflow?.addOverride(`jobs.${tag}.env`, {
+        CI: "true",
+        GITHUB_TOKEN: `\${{ secrets.${npmInstallEnvVar} }}`,
+      });
+
+      releaseWorkflow?.addOverride(`jobs.${tag}.permissions`, {
+        packages: "read",
+        ...this.getBasePermissionsFor(tag),
+      });
+    });
+
+    // releaseWorkflow?.addOverride("jobs.release_github.needs", "release");
 
     // ensure we don't fail if the release file is not present
     const checkExistingTagStep = (
@@ -382,13 +412,13 @@ export class CdktfProviderProject extends cdk.JsiiProject {
     }
 
     // Fix maven issue (https://github.com/cdklabs/publib/pull/777)
-    github.GitHub.of(this)?.tryFindWorkflow("release")?.file?.patch(
-      JsonPatch.add(
-        "/jobs/release_maven/steps/10/env/MAVEN_OPTS",
-        // See https://stackoverflow.com/questions/70153962/nexus-staging-maven-plugin-maven-deploy-failed-an-api-incompatibility-was-enco
-        "--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"
-      )
-    );
+    // github.GitHub.of(this)?.tryFindWorkflow("release")?.file?.patch(
+    //   JsonPatch.add(
+    //     "/jobs/release_maven/steps/10/env/MAVEN_OPTS",
+    //     // See https://stackoverflow.com/questions/70153962/nexus-staging-maven-plugin-maven-deploy-failed-an-api-incompatibility-was-enco
+    //     "--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"
+    //   )
+    // );
 
     this.pinGithubActionVersions(githubActionPinnedVersions);
 
@@ -514,12 +544,12 @@ export class CdktfProviderProject extends cdk.JsiiProject {
             "rm -rf docs",
             "rm -f API.md",
             "mkdir docs",
-            "jsii-docgen --split-by-submodule -l typescript -l python -l java -l csharp -l go",
+            "jsii-docgen -l typescript -o docs/typescript.md",
             // There is no nice way to tell jsii-docgen to generate docs into a folder so I went this route
-            "mv *.*.md docs",
+            // "mv *.*.md docs",
             // Some part of the documentation are too long, we need to truncate them to ~10MB
-            "cd docs",
-            "ls ./ | xargs sed -i '150000,$ d' $1",
+            // "cd docs",
+            // "ls ./ | xargs sed -i '150000,$ d' $1",
           ].join(" && "),
         },
       ],
@@ -565,6 +595,33 @@ export class CdktfProviderProject extends cdk.JsiiProject {
       packageInfo,
       isDeprecated: !!isDeprecated,
     });
+  }
+
+  private getBasePermissionsFor(tag: string): { [key: string]: string } {
+    if (tag == "release") {
+      return {
+        contents: "write",
+      };
+    } else if (tag == "deprecate") {
+      return {
+        contents: "read",
+      };
+    } else if (tag == "release_github") {
+      return {
+        contents: "write",
+        issues: "write",
+      };
+    } else if (tag == "release_npm") {
+      return {
+        contents: "write",
+        packages: "write",
+        issues: "write",
+      };
+    } else
+      return {
+        contents: "read",
+        issues: "write",
+      };
   }
 
   private pinGithubActionVersions(pinnedVersions: Record<string, string>) {
