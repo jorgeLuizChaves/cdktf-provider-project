@@ -131,10 +131,10 @@ project.addFields({
         type: "chore",
         section: "Updates",
       },
-      {
-        type: "docs",
-        hidden: true,
-      },
+      // {
+      //   type: "docs",
+      //   hidden: true,
+      // },
       {
         type: "style",
         hidden: true,
