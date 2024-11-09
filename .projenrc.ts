@@ -37,6 +37,7 @@ const project = new cdk.JsiiProject({
     "https://github.com/jorgeLuizChaves/cdktf-provider-project.git",
   npmRegistryUrl: "https://npm.pkg.github.com",
   npmTokenSecret: "NPM_TOKEN",
+  package: true,
   authorOrganization: true,
   licensed: false, // we do supply our own license file with a custom header
   pullRequestTemplate: false,

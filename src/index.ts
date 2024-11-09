@@ -389,7 +389,8 @@ export class CdktfProviderProject extends cdk.JsiiProject {
       });
 
       releaseWorkflow?.addOverride(`jobs.${tag}.permissions`, {
-        packages: "read",
+        packages: "write",
+        contents: "write",
         ...this.getBasePermissionsFor(tag),
       });
     });

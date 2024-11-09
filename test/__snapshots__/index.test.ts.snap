@@ -377,7 +377,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: read
+      packages: write
     outputs:
       latest_commit: \${{ steps.git_remote.outputs.latest_commit }}
       tag_exists: \${{ steps.check_tag_exists.outputs.exists }}
@@ -430,7 +430,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -2337,7 +2337,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: read
+      packages: write
     outputs:
       latest_commit: \${{ steps.git_remote.outputs.latest_commit }}
       tag_exists: \${{ steps.check_tag_exists.outputs.exists }}
@@ -2388,7 +2388,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -4716,7 +4716,7 @@ jobs:
     runs-on: custom-linux-medium
     permissions:
       contents: write
-      packages: read
+      packages: write
     outputs:
       latest_commit: \${{ steps.git_remote.outputs.latest_commit }}
       tag_exists: \${{ steps.check_tag_exists.outputs.exists }}
@@ -4767,7 +4767,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -7099,7 +7099,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: read
+      packages: write
     outputs:
       latest_commit: \${{ steps.git_remote.outputs.latest_commit }}
       tag_exists: \${{ steps.check_tag_exists.outputs.exists }}
@@ -7150,7 +7150,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -9489,7 +9489,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: read
+      packages: write
     outputs:
       latest_commit: \${{ steps.git_remote.outputs.latest_commit }}
       tag_exists: \${{ steps.check_tag_exists.outputs.exists }}
@@ -9544,7 +9544,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
