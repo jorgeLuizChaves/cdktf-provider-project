@@ -1064,7 +1064,6 @@ scripts
       "description": "Set the version in package.json to the current version",
       "env": {
         "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
@@ -3148,7 +3147,6 @@ scripts
       "description": "Set the version in package.json to the current version",
       "env": {
         "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
@@ -5527,7 +5525,6 @@ scripts
       "description": "Set the version in package.json to the current version",
       "env": {
         "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
@@ -7910,7 +7907,6 @@ scripts
       "description": "Set the version in package.json to the current version",
       "env": {
         "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
@@ -10309,7 +10305,6 @@ scripts
       "description": "Set the version in package.json to the current version",
       "env": {
         "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",

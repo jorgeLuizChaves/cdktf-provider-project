@@ -576,7 +576,6 @@ export class CdktfProviderProject extends cdk.JsiiProject {
       ],
       env: {
         OUTFILE: "package.json",
-        CHANGELOG: "dist/changelog.md",
         BUMPFILE: "dist/version.txt",
         RELEASETAG: "dist/releasetag.txt",
         RELEASE_TAG_PREFIX: "",
