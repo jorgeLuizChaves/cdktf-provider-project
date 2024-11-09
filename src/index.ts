@@ -379,6 +379,11 @@ export class CdktfProviderProject extends cdk.JsiiProject {
 
     release_tags.forEach((tag) => {
       releaseWorkflow?.addOverride(`jobs.${tag}.env`, {
+        NPM_REGISTRY: "npm.pkg.github.com",
+        NPM_TOKEN: `\${{ secrets.GITHUB_TOKEN }}`,
+      });
+
+      releaseWorkflow?.addOverride(`jobs.${tag}.env`, {
         CI: "true",
         GITHUB_TOKEN: `\${{ secrets.${npmInstallEnvVar} }}`,
       });

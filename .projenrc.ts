@@ -35,6 +35,7 @@ const project = new cdk.JsiiProject({
   authorAddress: "https://hashicorp.com",
   repositoryUrl:
     "https://github.com/jorgeLuizChaves/cdktf-provider-project.git",
+  npmRegistryUrl: "https://npm.pkg.github.com",
   authorOrganization: true,
   licensed: false, // we do supply our own license file with a custom header
   pullRequestTemplate: false,
