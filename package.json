@@ -1,5 +1,5 @@
 {
-  "name": "@jlco/provider-confluent",
+  "name": "@jorgeLuizChaves/cdktf-provider-project",
   "repository": {
     "type": "git",
     "url": "https://github.com/jorgeLuizChaves/cdktf-provider-project.git"

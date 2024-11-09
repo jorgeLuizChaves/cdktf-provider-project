@@ -30,7 +30,7 @@ const githubActionPinnedVersions = {
 };
 
 const project = new cdk.JsiiProject({
-  name: "@jlco/provider-confluent",
+  name: "@jorgeLuizChaves/cdktf-provider-project",
   author: "HashiCorp",
   authorAddress: "https://hashicorp.com",
   repositoryUrl:
